@@ -1,26 +1,23 @@
 import 'package:flutter/material.dart';
-import 'diary_model.dart';
+import 'journal_model.dart';
+import 'package:intl/intl.dart';
 
-class DiaryListView extends StatelessWidget {
-  final List<Diary> diaries;
+class journalListView extends StatelessWidget {
+  final List<Journal> diaries;
   final VoidCallback onAddNew;
-  final Function(Diary, int) onViewDiary;
-  final Function(int) onDeleteDiary;
+  final Function(Journal) onViewjournal;
+  final Function(Journal) onDeletejournal;
 
-  DiaryListView({
+  journalListView({
     required this.diaries,
     required this.onAddNew,
-    required this.onViewDiary,
-    required this.onDeleteDiary,
+    required this.onViewjournal,
+    required this.onDeletejournal,
   });
-
-  String formatDate(DateTime date) {
-    return '${date.year}/${date.month.toString().padLeft(2, '0')}/${date.day.toString().padLeft(2, '0')} '
-           '${date.hour.toString().padLeft(2, '0')}:${date.minute.toString().padLeft(2, '0')}';
-  }
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Scaffold(
       body: Column(
         children: [
@@ -33,19 +30,18 @@ class DiaryListView extends StatelessWidget {
                     onPressed: onAddNew,
                     child: Padding(
                       padding: const EdgeInsets.symmetric(vertical: 12.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
                         children: [
                           Icon(Icons.add),
-                          SizedBox(width: 8),
-                          Text('新增日記', style: TextStyle(fontSize: 16)),
+                          SizedBox(height: 4),
+                          Text('新增日誌', style: TextStyle(fontSize: 14)),
                         ],
                       ),
                     ),
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Theme.of(context).primaryColor,
                       foregroundColor: Colors.white,
-                      minimumSize: Size(0, 50),
                     ),
                   ),
                 ),
@@ -54,24 +50,23 @@ class DiaryListView extends StatelessWidget {
                   child: ElevatedButton(
                     onPressed: () {
                       ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text('每週摘要功能即將推出！')),
+                        SnackBar(content: Text('每週摘要功能即將推出，敬請期待！')),
                       );
                     },
                     child: Padding(
                       padding: const EdgeInsets.symmetric(vertical: 12.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
                         children: [
                           Icon(Icons.summarize),
-                          SizedBox(width: 8),
-                          Text('每週摘要', style: TextStyle(fontSize: 16)),
+                          SizedBox(height: 4),
+                          Text('每週摘要', style: TextStyle(fontSize: 14)),
                         ],
                       ),
                     ),
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Theme.of(context).primaryColor,
+                      backgroundColor: Colors.grey,
                       foregroundColor: Colors.white,
-                      minimumSize: Size(0, 50),
                     ),
                   ),
                 ),
@@ -80,39 +75,43 @@ class DiaryListView extends StatelessWidget {
           ),
           Expanded(
             child: diaries.isEmpty
-                ? Center(child: Text('沒有日記。點擊上方按鈕來新增日記。'))
+                ? Center(child: Text('沒有日誌。點擊上方按鈕來新增日誌。'))
                 : ListView.builder(
                     itemCount: diaries.length,
                     itemBuilder: (context, index) {
-                      final diary = diaries[diaries.length - 1 - index];
-                      return Dismissible(
-                        key: Key(diary.date.toString()),
-                        direction: DismissDirection.endToStart,
-                        background: Container(
-                          alignment: Alignment.centerRight,
-                          padding: EdgeInsets.only(right: 20.0),
-                          color: Colors.red,
-                          child: Icon(Icons.delete, color: Colors.white),
-                        ),
-                        onDismissed: (direction) {
-                          onDeleteDiary(diaries.length - 1 - index);
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(content: Text('日記已刪除')),
-                          );
-                        },
+                      final journal = diaries[index];
+                      return Card(
+                        margin: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
                         child: ListTile(
-                          title: Text(diary.title),
-                          subtitle: Text(formatDate(diary.date)),
-                          onTap: () => onViewDiary(diary, diaries.length - 1 - index),
+                          title: Text(journal.title, style: TextStyle(fontWeight: FontWeight.bold)),
+                          subtitle: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(DateFormat('yyyy年MM月dd日 HH:mm').format(journal.date)),
+                              SizedBox(height: 4),
+                              Row(
+                                children: [
+                                  Icon(Icons.psychology, size: 16),
+                                  SizedBox(width: 4),
+                                  Text('投入程度: ${journal.engagementLevel}'),
+                                  SizedBox(width: 16),
+                                  Icon(Icons.battery_charging_full, size: 16),
+                                  SizedBox(width: 4),
+                                  Text('精力使用: ${journal.energyLevel}'),
+                                ],
+                              ),
+                            ],
+                          ),
+                          onTap: () => onViewjournal(journal),
                           trailing: IconButton(
-                            icon: Icon(Icons.delete),
+                            icon: Icon(Icons.delete, color: theme.primaryColor),
                             onPressed: () {
                               showDialog(
                                 context: context,
                                 builder: (BuildContext context) {
                                   return AlertDialog(
                                     title: Text('確認刪除'),
-                                    content: Text('你確定要刪除這篇日記嗎？'),
+                                    content: Text('你確定要刪除這篇日誌嗎？'),
                                     actions: <Widget>[
                                       TextButton(
                                         child: Text('取消'),
@@ -124,9 +123,9 @@ class DiaryListView extends StatelessWidget {
                                         child: Text('確定'),
                                         onPressed: () {
                                           Navigator.of(context).pop();
-                                          onDeleteDiary(diaries.length - 1 - index);
+                                          onDeletejournal(journal);
                                           ScaffoldMessenger.of(context).showSnackBar(
-                                            SnackBar(content: Text('日記已刪除')),
+                                            SnackBar(content: Text('日誌已刪除')),
                                           );
                                         },
                                       ),

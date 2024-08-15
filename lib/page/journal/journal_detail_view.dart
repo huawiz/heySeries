@@ -1,18 +1,19 @@
 import 'package:flutter/material.dart';
-import 'diary_model.dart';
+import 'journal_model.dart';
 
-class DiaryDetailView extends StatelessWidget {
-  final Diary diary;
+class journalDetailView extends StatelessWidget {
+  final Journal journal;
   final VoidCallback onEdit;
   final VoidCallback onBack;
 
-  DiaryDetailView({required this.diary, required this.onEdit, required this.onBack});
+  journalDetailView(
+      {required this.journal, required this.onEdit, required this.onBack});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('日記詳情'),
+        title: Text('日誌內容'),
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
           onPressed: onBack,
@@ -30,19 +31,31 @@ class DiaryDetailView extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              diary.title,
+              journal.title,
               style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
             ),
             SizedBox(height: 8),
-            Text(
-              diary.date.toString(),
-              style: TextStyle(fontSize: 14, color: Colors.grey),
+            Row(
+              children: [
+                Text(
+              '${journal.date.year}年${journal.date.month}月${journal.date.day}日 ${journal.date.hour}:${journal.date.minute}',
+              style: TextStyle(fontSize: 14),
+            ),
+                Spacer(), // 左側留空，將內容推到右側
+                Icon(Icons.psychology, size: 16),
+                SizedBox(width: 4),
+                Text('${journal.engagementLevel}'),
+                SizedBox(width: 16),
+                Icon(Icons.battery_charging_full, size: 16),
+                SizedBox(width: 4),
+                Text('${journal.energyLevel}'),
+              ],
             ),
             SizedBox(height: 16),
             Expanded(
               child: SingleChildScrollView(
                 child: Text(
-                  diary.content,
+                  journal.content,
                   style: TextStyle(fontSize: 16),
                 ),
               ),

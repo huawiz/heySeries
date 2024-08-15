@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:heyseries_dev/widgets/bottom_nav.dart'; 
 import 'package:heyseries_dev/page/home/home_page.dart'; 
 import 'package:heyseries_dev/page/compass/compass_page.dart'; 
-import 'package:heyseries_dev/page/diary/diary_page.dart'; 
+import 'package:heyseries_dev/page/journal/journal_page.dart'; 
 import 'package:heyseries_dev/page/mind/mind_page.dart'; 
 import 'package:heyseries_dev/page/setting/setting_page.dart'; 
+import 'package:heyseries_dev/theme.dart'; 
 
 void main() {
   runApp(MyApp());
@@ -15,6 +16,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: MainPage(),
+      theme: AppTheme.themeData,
     );
   }
 }
@@ -31,7 +33,7 @@ class _MainPageState extends State<MainPage> {
     HomePage(),
     MindPage(),
     CompassPage(),
-    DiaryPage(),
+    JournalPage(),
     SettingPage(),
   ];
 

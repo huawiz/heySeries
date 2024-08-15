@@ -5,21 +5,23 @@ class BottomNav extends StatelessWidget {
   final ValueChanged<int> onTap;
 
   const BottomNav({
-    super.key,
+    Key? key,
     required this.currentIndex,
     required this.onTap,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return Theme(
       data: Theme.of(context).copyWith(
         bottomNavigationBarTheme: BottomNavigationBarThemeData(
-          backgroundColor: Colors.blue.shade100, // 設置背景色
-          selectedItemColor: Colors.blue.shade900, // 選中項目的顏色（深藍色）
-          unselectedItemColor: Colors.blue.shade600, // 未選中項目的顏色（中藍色）
-          selectedLabelStyle: TextStyle(fontWeight: FontWeight.bold, fontSize: 14), // 選中項目的標籤樣式
-          unselectedLabelStyle: TextStyle(fontWeight: FontWeight.normal,fontSize: 14),
+          backgroundColor: theme.colorScheme.surface,
+          selectedItemColor: theme.colorScheme.primary,
+          unselectedItemColor: theme.colorScheme.onSurface.withOpacity(0.6),
+          selectedLabelStyle: TextStyle(fontWeight: FontWeight.bold, fontSize: 12),
+          unselectedLabelStyle: TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
           showSelectedLabels: true,
           showUnselectedLabels: true,
           type: BottomNavigationBarType.fixed,
@@ -33,23 +35,28 @@ class BottomNav extends StatelessWidget {
         onTap: onTap,
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
-            icon: Icon(Icons.home),
+            icon: Icon(Icons.home_outlined),
+            activeIcon: Icon(Icons.home),
             label: 'Home',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.psychology),
+            icon: Icon(Icons.psychology_outlined),
+            activeIcon: Icon(Icons.psychology),
             label: 'Mind',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.explore),
+            icon: Icon(Icons.explore_outlined),
+            activeIcon: Icon(Icons.explore),
             label: 'Compass',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.auto_stories),
-            label: 'Diary',
+            icon: Icon(Icons.auto_stories_outlined),
+            activeIcon: Icon(Icons.auto_stories),
+            label: 'Journal',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.manage_accounts),
+            icon: Icon(Icons.manage_accounts_outlined),
+            activeIcon: Icon(Icons.manage_accounts),
             label: 'Setting',
           ),
         ],

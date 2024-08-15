@@ -20,7 +20,7 @@ class CompassPage extends StatelessWidget {
             SizedBox(height: 16),  // 按鈕之間的間隔
             Flexible(
               flex: 4,
-              child: _buildButton(context, '建立奧德賽計畫', Colors.blue),
+              child: _buildButton(context, '奧德賽計畫', Colors.blue),
             ),
           ],
         ),
@@ -38,12 +38,14 @@ class CompassPage extends StatelessWidget {
           style: TextStyle(fontSize: 24, color: Colors.white),
         ),
         onPressed: () {
-          // 暫時不添加任何功能
+          ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text('功能即將推出！')),
+                      );
         },
         style: ElevatedButton.styleFrom(
           backgroundColor: color,
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(20),  // 添加圓角
+            borderRadius: BorderRadius.circular(15),  // 添加圓角
           ),
           padding: EdgeInsets.zero,
         ),
