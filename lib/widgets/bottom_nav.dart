@@ -14,15 +14,21 @@ class BottomNav extends StatelessWidget {
   Widget build(BuildContext context) {
     return Theme(
       data: Theme.of(context).copyWith(
-        // 設置 BottomNavigationBar 的主題
         bottomNavigationBarTheme: BottomNavigationBarThemeData(
-          selectedItemColor: Colors.blue, // 選中項目的顏色
-          unselectedItemColor: Colors.grey, // 未選中項目的顏色
-          backgroundColor: Colors.white, // 底部導航欄的背景顏色
+          backgroundColor: Colors.blue.shade100, // 設置背景色
+          selectedItemColor: Colors.blue.shade900, // 選中項目的顏色（深藍色）
+          unselectedItemColor: Colors.blue.shade600, // 未選中項目的顏色（中藍色）
+          selectedLabelStyle: TextStyle(fontWeight: FontWeight.bold, fontSize: 14), // 選中項目的標籤樣式
+          unselectedLabelStyle: TextStyle(fontWeight: FontWeight.normal,fontSize: 14),
+          showSelectedLabels: true,
+          showUnselectedLabels: true,
+          type: BottomNavigationBarType.fixed,
+          elevation: 8,
         ),
+        splashColor: Colors.transparent,
+        highlightColor: Colors.transparent,
       ),
       child: BottomNavigationBar(
-        type: BottomNavigationBarType.fixed,
         currentIndex: currentIndex,
         onTap: onTap,
         items: const <BottomNavigationBarItem>[
@@ -38,7 +44,6 @@ class BottomNav extends StatelessWidget {
             icon: Icon(Icons.explore),
             label: 'Compass',
           ),
-
           BottomNavigationBarItem(
             icon: Icon(Icons.auto_stories),
             label: 'Diary',

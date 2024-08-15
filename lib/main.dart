@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:heyseries_dev/widgets/bottom_nav.dart'; 
-import 'package:heyseries_dev/page/home/home.dart'; 
+import 'package:heyseries_dev/page/home/home_page.dart'; 
+import 'package:heyseries_dev/page/compass/compass_page.dart'; 
+import 'package:heyseries_dev/page/diary/diary_page.dart'; 
+import 'package:heyseries_dev/page/mind/mind_page.dart'; 
+import 'package:heyseries_dev/page/setting/setting_page.dart'; 
 
 void main() {
   runApp(MyApp());
@@ -50,38 +54,3 @@ class _MainPageState extends State<MainPage> {
   }
 }
 
-class MindPage extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: Text('Mind Page'),
-    );
-  }
-}
-
-class CompassPage extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: Text('Compass Page'),
-    );
-  }
-}
-
-class DiaryPage extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: Text('Diary Page'),
-    );
-  }
-}
-
-class SettingPage extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: Text('Setting Page'),
-    );
-  }
-}
