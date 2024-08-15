@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'journal_model.dart';
+import '../journal/journal_model.dart';
 import 'package:intl/intl.dart';
 
 class journalListView extends StatelessWidget {
@@ -19,6 +19,9 @@ class journalListView extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     return Scaffold(
+      appBar: AppBar(
+        title: Text('Journal'),
+      ),
       body: Column(
         children: [
           Padding(

@@ -94,6 +94,9 @@ class _journalPageState extends State<JournalPage> {
   Widget build(BuildContext context) {
     if (_isLoading) {
       return Scaffold(
+        appBar: AppBar(
+        title: Text('Journal'),
+      ),
         body: Center(child: CircularProgressIndicator()),
       );
     }

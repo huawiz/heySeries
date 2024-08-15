@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'journal_model.dart';
+import '../journal/journal_model.dart';
 
 class journalEditView extends StatefulWidget {
   final Journal? journal;
