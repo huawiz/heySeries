@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:heyseries_dev/widgets/bottom_nav.dart'; 
+import 'package:heyseries_dev/widgets/bottom_nav.dart';
 import 'package:heyseries_dev/page/home/home_page.dart'; 
 import 'package:heyseries_dev/page/compass/compass_page.dart'; 
 import 'package:heyseries_dev/page/journal/journal_page.dart'; 

@@ -1,33 +1,28 @@
 import 'package:flutter/material.dart';
-import 'journal_model.dart';
-import 'journal_service.dart';
-import 'journal_list_view.dart';
-import 'journal_edit_view.dart';
-import 'journal_detail_view.dart';
+import 'package:heyseries_dev/page/journal/model/journal_model.dart';
+import 'package:heyseries_dev/page/journal/journal_service.dart';
+import 'package:heyseries_dev/page/journal/views/journal_list_view.dart';
+import 'package:heyseries_dev/page/journal/views/journal_edit_view.dart';
+import 'package:heyseries_dev/page/journal/views/journal_detail_view.dart';
+
 
 class JournalPage extends StatefulWidget {
   @override
-  State<JournalPage> createState() {
-    return _JournalPageState();
-  }
+  State<JournalPage> createState() => _JournalPageState();
 }
 
 class _JournalPageState extends State<JournalPage> {
   final JournalService _journalService = JournalService();
   List<Journal> _diaries = [];
-  bool _isWriting = false;
-  bool _isViewing = false;
-  bool _isEditing = false;
-  Journal? _currentjournal;
   bool _isLoading = true;
 
   @override
   void initState() {
     super.initState();
-    _initializejournalService();
+    _initializeJournalService();
   }
 
-  Future<void> _initializejournalService() async {
+  Future<void> _initializeJournalService() async {
     await _journalService.init();
     await _loadDiaries();
   }
@@ -46,51 +41,38 @@ class _JournalPageState extends State<JournalPage> {
     }
   }
 
-  void _startWriting() {
-    setState(() {
-      _isWriting = true;
-      _isViewing = false;
-      _isEditing = false;
-      _currentjournal = null;
-    });
-  }
+  Future<void> _navigateToEditPage([Journal? journal]) async {
+    final result = await Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => JournalEditPage(journal: journal),
+      ),
+    );
 
-  void _startEditing(Journal journal) {
-    setState(() {
-      _isWriting = false;
-      _isViewing = false;
-      _isEditing = true;
-      _currentjournal = journal;
-    });
-  }
-
-  void _viewjournal(Journal journal) {
-    setState(() {
-      _isWriting = false;
-      _isViewing = true;
-      _isEditing = false;
-      _currentjournal = journal;
-    });
-  }
-
-  Future<void> _savejournal(String title, String content, int engagementLevel,
-      int energyLevel) async {
-    if (_isEditing && _currentjournal != null) {
-      await _journalService.updatejournal(
-          _currentjournal!.id, title, content, engagementLevel, energyLevel);
-    } else {
-      await _journalService.addjournal(
-          title, content, engagementLevel, energyLevel);
+    if (result == true) {
+      await _loadDiaries();
     }
-    await _loadDiaries();
-    setState(() {
-      _isWriting = false;
-      _isEditing = false;
-      _isViewing = false;
-    });
   }
 
-  Future<void> _deletejournal(Journal journal) async {
+  Future<void> _navigateToDetailView(Journal journal) async {
+    await Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => JournalDetailView(
+          journal: journal,
+          onEdit: () {
+            Navigator.pop(context);
+            _navigateToEditPage(journal);
+          },
+          onBack: () => Navigator.pop(context),
+        ),
+      ),
+    );
+    // 每次從詳情頁返回時都重新加載日誌列表，以確保顯示最新數據
+    await _loadDiaries();
+  }
+
+  Future<void> _deleteJournal(Journal journal) async {
     await _journalService.deletejournal(journal.id);
     await _loadDiaries();
   }
@@ -99,36 +81,17 @@ class _JournalPageState extends State<JournalPage> {
   Widget build(BuildContext context) {
     if (_isLoading) {
       return Scaffold(
-        appBar: AppBar(
-          title: Text('Journal'),
-        ),
+        appBar: AppBar(title: Text('Journal')),
         body: Center(child: CircularProgressIndicator()),
       );
     }
 
-    if (_isWriting || _isEditing) {
-      return JournalEditView(
-        journal: _currentjournal,
-        onSave: _savejournal,
-        onCancel: () => setState(() {
-          _isWriting = false;
-          _isEditing = false;
-        }),
-      );
-    } else if (_isViewing) {
-      return JournalDetailView(
-        journal: _currentjournal!,
-        onEdit: () => _startEditing(_currentjournal!),
-        onBack: () => setState(() => _isViewing = false),
-      );
-    } else {
-      return JournalListView(
-        diaries: _diaries,
-        onAddNew: _startWriting,
-        onViewjournal: _viewjournal,
-        onDeletejournal: _deletejournal,
-      );
-    }
+    return JournalListView(
+      diaries: _diaries,
+      onAddNew: () => _navigateToEditPage(),
+      onViewJournal: _navigateToDetailView,
+      onDeleteJournal: _deleteJournal,
+    );
   }
 
   @override

@@ -51,7 +51,7 @@ class AppTheme {
     ),
     sliderTheme: SliderThemeData(
       activeTrackColor: prussianBlue,
-      inactiveTrackColor: lightGrey,
+      //inactiveTrackColor: lightGrey,
       thumbColor: prussianBlue,
       overlayColor: prussianBlue.withOpacity(0.2),
     ),
@@ -78,11 +78,9 @@ class AppTheme {
       primary: prussianBlue,
       secondary: prussianBlue.withOpacity(0.7),
       surface: white,
-      background: lightGrey,
       onPrimary: white,
       onSecondary: white,
       onSurface: darkGrey,
-      onBackground: darkGrey,
     ),
   );
 }
