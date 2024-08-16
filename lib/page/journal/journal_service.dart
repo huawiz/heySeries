@@ -2,7 +2,7 @@ import 'package:isar/isar.dart';
 import 'package:path_provider/path_provider.dart';
 import 'journal_model.dart';
 
-class journalService {
+class JournalService {
   late Isar isar;
 
   Future<void> init() async {

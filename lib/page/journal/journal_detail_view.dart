@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import '../journal/journal_model.dart';
 
-class journalDetailView extends StatelessWidget {
+class JournalDetailView extends StatelessWidget {
+  
   final Journal journal;
   final VoidCallback onEdit;
   final VoidCallback onBack;
 
-  journalDetailView(
-      {required this.journal, required this.onEdit, required this.onBack});
+  const JournalDetailView(
+      {super.key,required this.journal, required this.onEdit, required this.onBack});
 
   @override
   Widget build(BuildContext context) {

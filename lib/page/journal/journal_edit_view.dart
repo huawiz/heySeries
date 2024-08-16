@@ -1,18 +1,20 @@
 import 'package:flutter/material.dart';
 import '../journal/journal_model.dart';
 
-class journalEditView extends StatefulWidget {
+class JournalEditView extends StatefulWidget {
   final Journal? journal;
   final Function(String, String, int, int) onSave;
   final VoidCallback onCancel;
 
-  journalEditView({this.journal, required this.onSave, required this.onCancel});
+  JournalEditView({this.journal, required this.onSave, required this.onCancel});
 
   @override
-  _journalEditViewState createState() => _journalEditViewState();
+  State<JournalEditView> createState() {
+    return _JournalEditViewState();
+  }
 }
 
-class _journalEditViewState extends State<journalEditView> {
+class _JournalEditViewState extends State<JournalEditView> {
   late TextEditingController _titleController;
   late TextEditingController _contentController;
   int _engagementLevel = 5;
@@ -22,7 +24,8 @@ class _journalEditViewState extends State<journalEditView> {
   void initState() {
     super.initState();
     _titleController = TextEditingController(text: widget.journal?.title ?? '');
-    _contentController = TextEditingController(text: widget.journal?.content ?? '');
+    _contentController =
+        TextEditingController(text: widget.journal?.content ?? '');
     if (widget.journal != null) {
       _engagementLevel = widget.journal!.engagementLevel;
       _energyLevel = widget.journal!.energyLevel;
@@ -30,7 +33,8 @@ class _journalEditViewState extends State<journalEditView> {
   }
 
   bool _validateInputs() {
-    if (_titleController.text.trim().isEmpty || _contentController.text.trim().isEmpty) {
+    if (_titleController.text.trim().isEmpty ||
+        _contentController.text.trim().isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('標題和內容不能為空')),
       );
@@ -41,19 +45,15 @@ class _journalEditViewState extends State<journalEditView> {
 
   void _handleSave() {
     if (_validateInputs()) {
-      widget.onSave(
-        _titleController.text.trim(),
-        _contentController.text.trim(),
-        _engagementLevel,
-        _energyLevel
-      );
+      widget.onSave(_titleController.text.trim(),
+          _contentController.text.trim(), _engagementLevel, _energyLevel);
     }
   }
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    
+
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.journal == null ? '新增日誌' : '編輯日誌'),

@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import '../journal/journal_model.dart';
 import 'package:intl/intl.dart';
 
-class journalListView extends StatelessWidget {
+class JournalListView extends StatelessWidget {
   final List<Journal> diaries;
   final VoidCallback onAddNew;
   final Function(Journal) onViewjournal;
   final Function(Journal) onDeletejournal;
 
-  journalListView({
+  JournalListView({
     required this.diaries,
     required this.onAddNew,
     required this.onViewjournal,

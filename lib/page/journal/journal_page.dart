@@ -7,11 +7,13 @@ import 'journal_detail_view.dart';
 
 class JournalPage extends StatefulWidget {
   @override
-  _journalPageState createState() => _journalPageState();
+  State<JournalPage> createState() {
+    return _JournalPageState();
+  }
 }
 
-class _journalPageState extends State<JournalPage> {
-  final journalService _journalService = journalService();
+class _JournalPageState extends State<JournalPage> {
+  final JournalService _journalService = JournalService();
   List<Journal> _diaries = [];
   bool _isWriting = false;
   bool _isViewing = false;
@@ -71,11 +73,14 @@ class _journalPageState extends State<JournalPage> {
     });
   }
 
-  Future<void> _savejournal(String title, String content, int engagementLevel, int energyLevel) async {
+  Future<void> _savejournal(String title, String content, int engagementLevel,
+      int energyLevel) async {
     if (_isEditing && _currentjournal != null) {
-      await _journalService.updatejournal(_currentjournal!.id, title, content, engagementLevel, energyLevel);
+      await _journalService.updatejournal(
+          _currentjournal!.id, title, content, engagementLevel, energyLevel);
     } else {
-      await _journalService.addjournal(title, content, engagementLevel, energyLevel);
+      await _journalService.addjournal(
+          title, content, engagementLevel, energyLevel);
     }
     await _loadDiaries();
     setState(() {
@@ -95,14 +100,14 @@ class _journalPageState extends State<JournalPage> {
     if (_isLoading) {
       return Scaffold(
         appBar: AppBar(
-        title: Text('Journal'),
-      ),
+          title: Text('Journal'),
+        ),
         body: Center(child: CircularProgressIndicator()),
       );
     }
 
     if (_isWriting || _isEditing) {
-      return journalEditView(
+      return JournalEditView(
         journal: _currentjournal,
         onSave: _savejournal,
         onCancel: () => setState(() {
@@ -111,13 +116,13 @@ class _journalPageState extends State<JournalPage> {
         }),
       );
     } else if (_isViewing) {
-      return journalDetailView(
+      return JournalDetailView(
         journal: _currentjournal!,
         onEdit: () => _startEditing(_currentjournal!),
         onBack: () => setState(() => _isViewing = false),
       );
     } else {
-      return journalListView(
+      return JournalListView(
         diaries: _diaries,
         onAddNew: _startWriting,
         onViewjournal: _viewjournal,
